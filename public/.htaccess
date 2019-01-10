@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# dynamically setup base URI
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+RewriteRule ^(.*) - [E=BASE_URI:%1]
+
+# Tout ce qui n'est pas un répertoire existant
+RewriteCond %{REQUEST_FILENAME} !-d
+# Tout ce qui n'est pas un fichier existant
+RewriteCond %{REQUEST_FILENAME} !-f
+# Redirige moi vers index.php et ajoute-moi un paramètre en GET qui contiendra l'URL appelée
+# On capture tout ce qu'il y a après le dossier courant et on le pace dans le paramètre en GET _url
+RewriteRule ^(.*)$ index.php?_url=/$1 [QSA,L]
